@@ -14,7 +14,7 @@ const typeDefs = gql`
     authors: [String]
     description: String
     title: String
-    image: Upload
+    image: String
     link: String
   }
 
@@ -31,12 +31,15 @@ const typeDefs = gql`
     login(email: String!, password: String!): Auth
     addUser(email: String!, password: String!, username: String!): Auth
     saveBook(
+      bookId: String
       authors: [String]
       description: String!
       title: String!
-      image: Upload!
+      image: String!
       link: String!
     ): User
     removeBook(bookId: ID!): User
   }
 `;
+
+module.exports = typeDefs;
