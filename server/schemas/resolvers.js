@@ -16,18 +16,6 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in");
     },
-    users: async () => {
-      return User.find()
-        .select("-__v -password")
-        .populate("bookCount")
-        .populate("savedBooks");
-    },
-    user: async (parent, { username }) => {
-      return User.findOne({ username })
-        .select("-__v -password")
-        .populate("bookCount")
-        .populate("savedBooks");
-    },
   },
 
   Mutation: {
@@ -53,7 +41,7 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    addBook: async (parent, args, context) => {
+    saveBook: async (parent, args, context) => {
       if (context.user) {
         const Bookadded = await User.findByIdAndUpdate(
           { _id: context.user._id },
