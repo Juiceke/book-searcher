@@ -22,27 +22,27 @@ const SignupForm = () => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
+    console.log(userFormData);
   };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
-    // // check if form has everything (as per react-bootstrap docs)
-    // const form = event.currentTarget;
-    // if (form.checkValidity() === false) {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    // }
 
     try {
       const { data } = await addUser({
         variables: { ...userFormData },
       });
 
+      console.log(data);
       Auth.login(data.addUser.token);
     } catch (err) {
       console.error(err);
     }
+    setUserFormData({
+      username: "",
+      email: "",
+      password: "",
+    });
   };
 
   return (
