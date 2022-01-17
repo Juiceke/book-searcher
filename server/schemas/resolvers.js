@@ -6,10 +6,11 @@ const resolvers = {
   Query: {
     me: async (parent, args, context) => {
       if (context.user) {
-        const UserData = await User.findOne({ _id: context.user._id })
-          .select("-__v -password")
-          .populate("savedBooks")
-          .populate("bookCount");
+        const UserData = await User.findOne({ _id: context.user._id }).select(
+          "-__v -password"
+        );
+        // .populate("savedBooks")
+        // .populate("bookCount");
         return UserData;
       }
 
@@ -34,13 +35,13 @@ const resolvers = {
       const user = await User.findOne({ email });
 
       if (!user) {
-        throw new AuthenticationError("incorrect email or password");
+        throw new AuthenticationError("Incorrect credentials");
       }
 
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError("incorrect email or password");
+        throw new AuthenticationError("Incorrect credentials");
       }
 
       const token = signToken(user);

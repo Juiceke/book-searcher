@@ -17,10 +17,10 @@ import { removeBookId } from "../utils/localStorage";
 const SavedBooks = () => {
   const { loading, data } = useQuery(GET_ME);
   console.log(data);
-  console.log(loading);
   const [deleteBook, { error }] = useMutation(REMOVE_BOOK);
 
-  const [Userdata, setUserData] = useState(loading ? null : data?.me);
+  // const [Userdata, setUserData] = useState(loading ? null : data);
+  const Userdata = data?.me || {};
 
   console.log(Userdata);
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
@@ -36,19 +36,19 @@ const SavedBooks = () => {
         variables: { bookId },
       });
 
-      setUserData(() => {
-        return {
-          ...Userdata,
-          savedBooks: data.data.removeBook.savedBooks,
-        };
-      });
+      // setUserData(() => {
+      //   return {
+      //     ...Userdata,
+      //     savedBooks: data.data.removeBook.savedBooks,
+      //   };
+      // });
       removeBookId(bookId);
     } catch (err) {
       console.error(err);
     }
   };
 
-  if (!Userdata) {
+  if (loading) {
     return <h2>LOADING...</h2>;
   }
 
